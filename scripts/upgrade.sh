@@ -1,16 +1,16 @@
 #!/bin/bash
 ## Do not modify this file. You will lose the ability to autoupdate!
 
-CDN="https://cdn.coollabs.io/coolify"
+CDN="https://raw.githubusercontent.com/caillouc/coolify/refs/heads/v4.x"
 LATEST_IMAGE=${1:-latest}
 LATEST_HELPER_VERSION=${2:-latest}
 REGISTRY_URL=${3:-ghcr.io}
 SKIP_BACKUP=${4:-false}
-ENV_FILE="/data/coolify/source/.env"
-STATUS_FILE="/data/coolify/source/.upgrade-status"
+ENV_FILE="/home/pierre/coolify/source/.env"
+STATUS_FILE="/home/pierre/coolify/source/.upgrade-status"
 
 DATE=$(date +%Y-%m-%d-%H-%M-%S)
-LOGFILE="/data/coolify/source/upgrade-${DATE}.log"
+LOGFILE="/home/pierre/coolify/source/upgrade-${DATE}.log"
 
 # Helper function to log with timestamp
 log() {
@@ -51,30 +51,30 @@ log_section "Step 1/6: Downloading configuration files"
 write_status "1" "Downloading configuration files"
 echo "1/6 Downloading latest configuration files..."
 log "Downloading docker-compose.yml from ${CDN}/docker-compose.yml"
-curl -fsSL -L $CDN/docker-compose.yml -o /data/coolify/source/docker-compose.yml
+curl -fsSL -L $CDN/docker-compose.yml -o /home/pierre/coolify/source/docker-compose.yml
 log "Downloading docker-compose.prod.yml from ${CDN}/docker-compose.prod.yml"
-curl -fsSL -L $CDN/docker-compose.prod.yml -o /data/coolify/source/docker-compose.prod.yml
+curl -fsSL -L $CDN/docker-compose.prod.yml -o /home/pierre/coolify/source/docker-compose.prod.yml
 log "Downloading .env.production from ${CDN}/.env.production"
-curl -fsSL -L $CDN/.env.production -o /data/coolify/source/.env.production
+curl -fsSL -L $CDN/.env.production -o /home/pierre/coolify/source/.env.production
 log "Downloading upgrade-postgres.sh from ${CDN}/upgrade-postgres.sh"
-curl -fsSL -L $CDN/upgrade-postgres.sh -o /data/coolify/source/upgrade-postgres.sh
-chmod +x /data/coolify/source/upgrade-postgres.sh
+curl -fsSL -L $CDN/upgrade-postgres.sh -o /home/pierre/coolify/source/upgrade-postgres.sh
+chmod +x /home/pierre/coolify/source/upgrade-postgres.sh
 log "Configuration files downloaded successfully"
 echo "     Done."
 
 # Extract all images from docker-compose configuration
 log "Extracting all images from docker-compose configuration..."
-COMPOSE_FILES="-f /data/coolify/source/docker-compose.yml -f /data/coolify/source/docker-compose.prod.yml"
+COMPOSE_FILES="-f /home/pierre/coolify/source/docker-compose.yml -f /home/pierre/coolify/source/docker-compose.prod.yml"
 
 # Check if custom compose file exists
-if [ -f /data/coolify/source/docker-compose.custom.yml ]; then
-    COMPOSE_FILES="$COMPOSE_FILES -f /data/coolify/source/docker-compose.custom.yml"
+if [ -f /home/pierre/coolify/source/docker-compose.custom.yml ]; then
+    COMPOSE_FILES="$COMPOSE_FILES -f /home/pierre/coolify/source/docker-compose.custom.yml"
     log "Including custom docker-compose.yml in image extraction"
 fi
 
 # Check if PostgreSQL upgrade override exists
-if [ -f /data/coolify/source/docker-compose.postgres-upgrade.yml ]; then
-    COMPOSE_FILES="$COMPOSE_FILES -f /data/coolify/source/docker-compose.postgres-upgrade.yml"
+if [ -f /home/pierre/coolify/source/docker-compose.postgres-upgrade.yml ]; then
+    COMPOSE_FILES="$COMPOSE_FILES -f /home/pierre/coolify/source/docker-compose.postgres-upgrade.yml"
     log "Including PostgreSQL upgrade compose override in image extraction"
 fi
 
@@ -109,7 +109,7 @@ write_status "2" "Updating environment configuration"
 echo ""
 echo "2/6 Updating environment configuration..."
 log "Merging .env.production values into .env"
-awk -F '=' '!seen[$1]++' "$ENV_FILE" /data/coolify/source/.env.production > "$ENV_FILE.tmp" && mv "$ENV_FILE.tmp" "$ENV_FILE"
+awk -F '=' '!seen[$1]++' "$ENV_FILE" /home/pierre/coolify/source/.env.production > "$ENV_FILE.tmp" && mv "$ENV_FILE.tmp" "$ENV_FILE"
 log "Environment file merged successfully"
 
 update_env_var() {
@@ -152,11 +152,11 @@ fi
 
 # Fix SSH directory ownership if not owned by container user UID 9999 (fixes #6621)
 # Only changes owner — preserves existing group to respect custom setups
-SSH_OWNER=$(stat -c '%u' /data/coolify/ssh 2>/dev/null || echo "unknown")
+SSH_OWNER=$(stat -c '%u' /home/pierre/coolify/ssh 2>/dev/null || echo "unknown")
 if [ "$SSH_OWNER" != "9999" ]; then
     log "Fixing SSH directory ownership (was owned by UID $SSH_OWNER)"
-    chown -R 9999 /data/coolify/ssh
-    chmod -R 700 /data/coolify/ssh
+    chown -R 9999 /home/pierre/coolify/ssh
+    chmod -R 700 /home/pierre/coolify/ssh
 fi
 
 # Check if Docker config file exists
@@ -254,18 +254,18 @@ nohup bash -c "
     echo '============================================================' >>\"\$LOGFILE\"
     write_status '5' 'Starting new containers'
 
-    COMPOSE_FILES='-f /data/coolify/source/docker-compose.yml -f /data/coolify/source/docker-compose.prod.yml'
-    if [ -f /data/coolify/source/docker-compose.custom.yml ]; then
+    COMPOSE_FILES='-f /home/pierre/coolify/source/docker-compose.yml -f /home/pierre/coolify/source/docker-compose.prod.yml'
+    if [ -f /home/pierre/coolify/source/docker-compose.custom.yml ]; then
         log 'Using custom docker-compose.yml'
-        COMPOSE_FILES=\"\$COMPOSE_FILES -f /data/coolify/source/docker-compose.custom.yml\"
+        COMPOSE_FILES=\"\$COMPOSE_FILES -f /home/pierre/coolify/source/docker-compose.custom.yml\"
     fi
-    if [ -f /data/coolify/source/docker-compose.postgres-upgrade.yml ]; then
+    if [ -f /home/pierre/coolify/source/docker-compose.postgres-upgrade.yml ]; then
         log 'Using PostgreSQL upgrade compose override'
-        COMPOSE_FILES=\"\$COMPOSE_FILES -f /data/coolify/source/docker-compose.postgres-upgrade.yml\"
+        COMPOSE_FILES=\"\$COMPOSE_FILES -f /home/pierre/coolify/source/docker-compose.postgres-upgrade.yml\"
     fi
 
     log 'Running docker compose up...'
-    docker run -v /data/coolify/source:/data/coolify/source -v /var/run/docker.sock:/var/run/docker.sock \${DOCKER_CONFIG_MOUNT} --rm \${REGISTRY_URL:-ghcr.io}/coollabsio/coolify-helper:\${LATEST_HELPER_VERSION} bash -c \"LATEST_IMAGE=\${LATEST_IMAGE} docker compose --env-file /data/coolify/source/.env \${COMPOSE_FILES} up -d --remove-orphans --wait --wait-timeout 60\" >>\"\$LOGFILE\" 2>&1
+    docker run -v /home/pierre/coolify/source:/home/pierre/coolify/source -v /var/run/docker.sock:/var/run/docker.sock \${DOCKER_CONFIG_MOUNT} --rm \${REGISTRY_URL:-ghcr.io}/coollabsio/coolify-helper:\${LATEST_HELPER_VERSION} bash -c \"LATEST_IMAGE=\${LATEST_IMAGE} docker compose --env-file /home/pierre/coolify/source/.env \${COMPOSE_FILES} up -d --remove-orphans --wait --wait-timeout 60\" >>\"\$LOGFILE\" 2>&1
     log 'Docker compose up completed'
 
     # Final log entry

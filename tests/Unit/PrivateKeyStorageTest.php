@@ -112,7 +112,7 @@ uZx9iFkCELtxrh31QJ68AAAAEXNhaWxANzZmZjY2ZDJlMmRkAQIDBA==
             );
 
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('SSH keys storage directory is not writable. Run on the host: sudo chown -R 9999 /data/coolify/ssh && sudo chmod -R 700 /data/coolify/ssh && docker restart coolify');
+        $this->expectExceptionMessage('SSH keys storage directory is not writable. Run on the host: sudo chown -R 9999 /home/pierre/coolify/ssh && sudo chmod -R 700 /home/pierre/coolify/ssh && docker restart coolify');
 
         PrivateKey::createAndStore([
             'name' => 'Test Key',

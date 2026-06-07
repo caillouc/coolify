@@ -7,6 +7,7 @@ services:
             - host.docker.internal:host-gateway
         networks:
             - coolify
+            - proxy
         depends_on:
             - postgres
             - redis
@@ -35,3 +36,6 @@ networks:
         name: coolify
         driver: bridge
         external: false
+    proxy:
+        name: proxy
+        external: true

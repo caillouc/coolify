@@ -19,9 +19,9 @@ function mockServerWithDbConfig(?string $savedConfig, string $proxyType = 'TRAEF
         ->andReturn($savedConfig);
 
     $proxyPath = match ($proxyType) {
-        'CADDY' => '/data/coolify/proxy/caddy',
-        'NGINX' => '/data/coolify/proxy/nginx',
-        default => '/data/coolify/proxy/',
+        'CADDY' => '/home/pierre/coolify/proxy/caddy',
+        'NGINX' => '/home/pierre/coolify/proxy/nginx',
+        default => '/home/pierre/coolify/proxy/',
     };
 
     $server = Mockery::mock('App\Models\Server');

@@ -166,7 +166,7 @@ class StartDragonfly
                 [
                     [
                         'type' => 'bind',
-                        'source' => '/data/coolify/ssl/coolify-ca.crt',
+                        'source' => '/home/pierre/coolify/ssl/coolify-ca.crt',
                         'target' => '/etc/dragonfly/certs/coolify-ca.crt',
                         'read_only' => true,
                     ],

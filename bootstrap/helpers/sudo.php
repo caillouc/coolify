@@ -16,7 +16,7 @@ function shouldChangeOwnership(string $path): bool
         }
     }
 
-    $isCoolifyPath = Str::startsWith($path, '/data/coolify') || Str::startsWith($path, '/tmp/coolify');
+    $isCoolifyPath = Str::startsWith($path, '/home/pierre/coolify') || Str::startsWith($path, '/tmp/coolify');
 
     return $isCoolifyPath;
 }

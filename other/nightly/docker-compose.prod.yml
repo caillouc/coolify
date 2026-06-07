@@ -3,14 +3,14 @@ services:
     image: "${REGISTRY_URL:-ghcr.io}/coollabsio/coolify:${LATEST_IMAGE:-latest}"
     volumes:
       - type: bind
-        source: /data/coolify/source/.env
+        source: /home/pierre/coolify/source/.env
         target: /var/www/html/.env
         read_only: true
-      - /data/coolify/ssh:/var/www/html/storage/app/ssh
-      - /data/coolify/applications:/var/www/html/storage/app/applications
-      - /data/coolify/databases:/var/www/html/storage/app/databases
-      - /data/coolify/services:/var/www/html/storage/app/services
-      - /data/coolify/backups:/var/www/html/storage/app/backups
+      - /home/pierre/coolify/ssh:/var/www/html/storage/app/ssh
+      - /home/pierre/coolify/applications:/var/www/html/storage/app/applications
+      - /home/pierre/coolify/databases:/var/www/html/storage/app/databases
+      - /home/pierre/coolify/services:/var/www/html/storage/app/services
+      - /home/pierre/coolify/backups:/var/www/html/storage/app/backups
     environment:
       - APP_ENV=${APP_ENV:-production}
       - PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT:-256M}
@@ -19,7 +19,7 @@ services:
       - PHP_FPM_PM_MIN_SPARE_SERVERS=${PHP_FPM_PM_MIN_SPARE_SERVERS:-1}
       - PHP_FPM_PM_MAX_SPARE_SERVERS=${PHP_FPM_PM_MAX_SPARE_SERVERS:-10}
     env_file:
-      - /data/coolify/source/.env
+      - /home/pierre/coolify/source/.env
     ports:
       - "${APP_PORT:-8000}:8080"
     expose:
@@ -65,7 +65,7 @@ services:
       - "${SOKETI_PORT:-6001}:6001"
       - "6002:6002"
     volumes:
-      - /data/coolify/ssh:/var/www/html/storage/app/ssh
+      - /home/pierre/coolify/ssh:/var/www/html/storage/app/ssh
     environment:
       APP_NAME: "${APP_NAME:-Coolify}"
       SOKETI_DEBUG: "${SOKETI_DEBUG:-false}"

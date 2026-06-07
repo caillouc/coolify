@@ -163,7 +163,7 @@ it('accepts valid directory paths', function (string $path) {
 })->with([
     'root' => '/',
     'simple path' => '/data',
-    'nested path' => '/data/coolify/volumes',
+    'nested path' => '/home/pierre/coolify/volumes',
     'with dots' => '/data/my.app/storage',
     'with hyphens' => '/data/my-app/storage',
     'with underscores' => '/data/my_app/storage',

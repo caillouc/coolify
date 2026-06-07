@@ -7,8 +7,8 @@ it('ensures container cleanup includes wait loop in command sequence', function 
 
     // Simulate the command generation pattern from StartProxy
     $commands = collect([
-        'mkdir -p /data/coolify/proxy/dynamic',
-        'cd /data/coolify/proxy',
+        'mkdir -p /home/pierre/coolify/proxy/dynamic',
+        'cd /home/pierre/coolify/proxy',
         "echo 'Creating required Docker Compose file.'",
         "echo 'Pulling docker image.'",
         'docker compose pull',

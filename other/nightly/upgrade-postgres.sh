@@ -4,9 +4,9 @@
 
 set -Eeuo pipefail
 
-SOURCE_DIR="/data/coolify/source"
+SOURCE_DIR="/home/pierre/coolify/source"
 ENV_FILE="${SOURCE_DIR}/.env"
-BACKUP_DIR="/data/coolify/backups/internal-postgres"
+BACKUP_DIR="/home/pierre/coolify/backups/internal-postgres"
 OVERRIDE_FILE="${SOURCE_DIR}/docker-compose.postgres-upgrade.yml"
 ROLLBACK_FILE="${SOURCE_DIR}/postgres-upgrade-rollback.env"
 DATE=$(date +%Y-%m-%d-%H-%M-%S)

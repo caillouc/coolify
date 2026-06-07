@@ -44,12 +44,12 @@ it('syncs nightly versions to BunnyCDN without creating a GitHub PR', function (
 
     Http::assertSent(fn ($request) => $request->url() === 'https://storage.bunnycdn.com/coolcdn/coolify-nightly/versions.json');
     Http::assertSent(fn ($request) => str_starts_with($request->url(), 'https://api.bunny.net/purge')
-        && $request['url'] === 'https://cdn.coollabs.io/coolify-nightly/versions.json');
+        && $request['url'] === 'https://raw.githubusercontent.com/caillouc/coolify/refs/heads/v4.x-nightly/versions.json');
 });
 
 it('syncs postgres upgrade script to BunnyCDN during full sync', function () {
     Http::fake([
-        'https://cdn.coollabs.io/coolify/*' => Http::response('', 404),
+        'https://raw.githubusercontent.com/caillouc/coolify/refs/heads/v4.x/*' => Http::response('', 404),
         'https://storage.bunnycdn.com/*' => Http::response([], 201),
         'https://api.bunny.net/purge*' => Http::response([], 200),
     ]);
@@ -63,5 +63,5 @@ it('syncs postgres upgrade script to BunnyCDN during full sync', function () {
         && $request->url() === 'https://storage.bunnycdn.com/coolcdn/coolify/upgrade-postgres.sh');
 
     Http::assertSent(fn ($request) => str_starts_with($request->url(), 'https://api.bunny.net/purge')
-        && $request['url'] === 'https://cdn.coollabs.io/coolify/upgrade-postgres.sh');
+        && $request['url'] === 'https://raw.githubusercontent.com/caillouc/coolify/refs/heads/v4.x/upgrade-postgres.sh');
 });

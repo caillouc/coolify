@@ -163,7 +163,7 @@ class StartMysql
                 [
                     [
                         'type' => 'bind',
-                        'source' => '/data/coolify/ssl/coolify-ca.crt',
+                        'source' => '/home/pierre/coolify/ssl/coolify-ca.crt',
                         'target' => '/etc/mysql/certs/coolify-ca.crt',
                         'read_only' => true,
                     ],

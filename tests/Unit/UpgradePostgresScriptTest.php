@@ -34,9 +34,9 @@ it('downloads postgres upgrade script during install and upgrade without auto-ru
 
     expect($script)
         ->toContain('upgrade-postgres.sh')
-        ->toContain('curl -fsSL -L $CDN/upgrade-postgres.sh -o /data/coolify/source/upgrade-postgres.sh')
+        ->toContain('curl -fsSL -L $CDN/upgrade-postgres.sh -o /home/pierre/coolify/source/upgrade-postgres.sh')
         ->toContain('chmod +x')
-        ->not->toContain('bash /data/coolify/source/upgrade-postgres.sh');
+        ->not->toContain('bash /home/pierre/coolify/source/upgrade-postgres.sh');
 })->with([
     'stable install' => 'scripts/install.sh',
     'nightly install' => 'other/nightly/install.sh',

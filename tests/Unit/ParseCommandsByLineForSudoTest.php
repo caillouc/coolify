@@ -178,14 +178,14 @@ test('skips sudo for fi statements', function () {
 
 test('adds ownership changes for Coolify data paths', function () {
     $commands = collect([
-        'mkdir -p /data/coolify/logs',
+        'mkdir -p /home/pierre/coolify/logs',
     ]);
 
     $result = parseCommandsByLineForSudo($commands, $this->server);
 
     // Note: The && operator adds another sudo, creating double sudo for chown/chmod
     // This is existing behavior that may need refactoring but isn't part of this bug fix
-    expect($result[0])->toBe('sudo mkdir -p /data/coolify/logs && sudo sudo chown -R ubuntu:ubuntu /data/coolify/logs && sudo sudo chmod -R o-rwx /data/coolify/logs');
+    expect($result[0])->toBe('sudo mkdir -p /home/pierre/coolify/logs && sudo sudo chown -R ubuntu:ubuntu /home/pierre/coolify/logs && sudo sudo chmod -R o-rwx /home/pierre/coolify/logs');
 });
 
 test('adds ownership changes for Coolify tmp paths', function () {

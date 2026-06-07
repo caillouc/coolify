@@ -84,7 +84,7 @@ class Upgrade extends Component
             return ['status' => 'none'];
         }
 
-        $statusFile = '/data/coolify/source/.upgrade-status';
+        $statusFile = '/home/pierre/coolify/source/.upgrade-status';
 
         try {
             $content = instant_remote_process(

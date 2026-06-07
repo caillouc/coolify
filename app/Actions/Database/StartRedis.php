@@ -167,7 +167,7 @@ class StartRedis
                 [
                     [
                         'type' => 'bind',
-                        'source' => '/data/coolify/ssl/coolify-ca.crt',
+                        'source' => '/home/pierre/coolify/ssl/coolify-ca.crt',
                         'target' => '/etc/redis/certs/coolify-ca.crt',
                         'read_only' => true,
                     ],

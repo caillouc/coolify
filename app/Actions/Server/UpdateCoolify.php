@@ -120,8 +120,8 @@ class UpdateCoolify
         $upgradeScriptUrl = config('constants.coolify.upgrade_script_url');
 
         remote_process([
-            "curl -fsSL {$upgradeScriptUrl} -o /data/coolify/source/upgrade.sh",
-            "bash /data/coolify/source/upgrade.sh $this->latestVersion $latestHelperImageVersion",
+            "curl -fsSL {$upgradeScriptUrl} -o /home/pierre/coolify/source/upgrade.sh",
+            "bash /home/pierre/coolify/source/upgrade.sh $this->latestVersion $latestHelperImageVersion",
         ], $this->server);
     }
 }

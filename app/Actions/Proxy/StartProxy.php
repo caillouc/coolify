@@ -50,7 +50,7 @@ class StartProxy
         } else {
             if (isDev()) {
                 if ($proxyType === ProxyTypes::CADDY->value) {
-                    $proxy_path = '/data/coolify/proxy/caddy';
+                    $proxy_path = '/home/pierre/coolify/proxy/caddy';
                 }
             }
             $caddyfile = 'import /dynamic/*.caddy';
